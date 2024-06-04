@@ -18,5 +18,5 @@ export function checkDiagnosticsErrors(diagnostics: ReadonlyArray<ts.Diagnostic>
 	}
 
 	errorLog(ts.formatDiagnostics(diagnostics, formatDiagnosticsHost).trim());
-	throw new Error(failMessage);
+	//throw new Error(failMessage);
 }

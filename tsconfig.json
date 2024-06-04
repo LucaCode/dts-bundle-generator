@@ -1,7 +1,9 @@
 {
 	"compilerOptions": {
 		"composite": true,
-		"incremental": true
+		"incremental": true,
+		"skipLibCheck": true,
+		"declaration": true
 	},
 	"references": [
 		{ "path": "./src" },

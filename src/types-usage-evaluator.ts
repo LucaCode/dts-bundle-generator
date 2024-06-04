@@ -6,6 +6,7 @@ import {
 	isRelativeDeclareModule,
 	splitTransientSymbol,
 } from './helpers/typescript';
+import SyntaxKind = ts.SyntaxKind;
 
 export type NodesParents = Map<ts.Symbol, Set<ts.Symbol>>;
 
@@ -109,9 +110,14 @@ export class TypesUsageEvaluator {
 	}
 
 	private getSymbol(node: ts.Node): ts.Symbol {
-		const nodeSymbol = this.typeChecker.getSymbolAtLocation(node);
+		let nodeSymbol = this.typeChecker.getSymbolAtLocation(node);
+
 		if (nodeSymbol === undefined) {
-			throw new Error(`Cannot find symbol for node: ${node.getText()}`);
+			if(node.parent && node.parent.kind === SyntaxKind.BindingElement)
+				nodeSymbol = this.typeChecker.getSymbolAtLocation(node.parent);
+
+			if(nodeSymbol === undefined)
+				throw new Error(`Cannot find symbol for node: ${node.getText()}`);
 		}
 
 		return this.getActualSymbol(nodeSymbol);
